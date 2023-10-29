@@ -1,0 +1,67 @@
+body{
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('../image/background1.jpeg');
+    z-index: -999;
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;    
+  }
+
+  a{
+    display:flex;
+    flex-direction: column;
+    align-content: flex-end;
+    text-decoration: none;
+}
+
+  #buttongroup{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+  .message{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    transform: translate(0, 110%);
+}
+h1{
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    color: white;
+    font-family:fantasy;
+    font-weight: 100;
+    font-size: 50px;
+    text-align: center;
+    color: rgb(36, 143, 36);
+}
+button{
+    margin-top: 15px;
+    width: 93px;
+    height: 40px;
+    background-color: rgb(40, 164, 236);
+    border-width: 1px;
+    display:flex;
+    flex-direction: row;
+    align-self: center;
+    color: rgb(255, 255, 255);
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: x-large;
+    font-weight: 500;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+@media only screen and (max-width:440px){   
+    body{
+        height: 100vh;
+        z-index: -999;
+    }
+    
+}

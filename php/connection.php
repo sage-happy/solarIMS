@@ -1,0 +1,8 @@
+<?php
+    $conn=pg_connect('postgres://xhzpzyanesqvuc:1e2585e325c09e7df352b8ead21111498f177ab4f59d27ad653e2d4cb1bd9e9c@ec2-54-167-29-148.compute-1.amazonaws.com:5432/dfv7a7v82kd3nf');
+    //exception handling
+    if(!$conn){
+        echo "Failed to connected";
+        exit;
+    }
+?>
