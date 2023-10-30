@@ -263,3 +263,14 @@ window.onload = function () {
 
     update(); // Start the update loop
 };
+
+window.onload = function () {
+    function update() {
+        poll();
+        dataReq();
+        console.log('After updating');
+        setTimeout(update, 3000);
+    }
+
+    update(); // Start the update loop
+};
