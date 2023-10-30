@@ -27,25 +27,27 @@
                 $("#search_results").hide();
             }
             });
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById('date').addEventListener("change", function() {
-        var selectedDate = this.value;
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "php/data.php", true);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log(xhr.responseText); // Handle the response from data.php if required
-            }
-        };
-        xhr.send("date=" + selectedDate);
+        });    
+</script>
+<script>
+    $(document).ready(function() {
+    $("#history").on('click', '#submit',function(e) {
+      // Prevent the default form submission
+      e.preventDefault();
+  
+      // Make an Ajax request to submit the form data
+      $.ajax({
+        type: "POST",
+        url: "php/data.php",
+        data: $("#history").serialize(),
+        success: function(data) {
+          // Handle the response from php/data.php
+          alert(data);
+        }
+      });
     });
-});
-
-    </script>
+  });
+</script>
     <style>
         table {
             border-collapse: collapse;
@@ -86,29 +88,32 @@
         <button class="btn btn-warning" id="tableBtn">Table</button>
       </div>
       
-      <form action="php/data.php" method="post" class="form-control" width="300px" id="history">
+      <form method="post" class="form-control" width="300px" id="history">
     <div class="container-fluid">
         <h3 style="text-align: center;">History</h3>
         <div class="row">
             <div class="col-4">
-                <label for="date" class="d-flex justify-content-center">Date: <br>
-                    <input type="date" name="day" id="date" class="input-group">
+                <label for="date" class="d-flex justify-content-center">START DATE: <br>
+                    <input type="date" name="start" id="date" class="input-group">
                 </label>
             </div>
         <div class="col-4">
-                <label for="week" class="d-flex justify-content-center">Week:   <br>
-                    <input type="week" name="week" id="week" class="input-group">
+                <label for="date" class="d-flex justify-content-center">END DATE:   <br>
+                    <input type="date" name="end" id="date" class="input-group">
                 </label>
             </div>
-            <div class="col-4">
+            <!-- <div class="col-4">
                 <label for="month" class="d-flex justify-content-center">Month: <br>
                     <input type="month" name="month" id="month" class="input-group">
                 </label>
-            </div> 
+            </div>  -->
+            <div class="col-4">
+                    <input class="input-group" type="button" id="submit" value="Send">
+            </div>
     </div>
 </form>
 
-<script>
+<!-- <script>
     document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('date').addEventListener("change", function() {
             var selectedDate = this.value;
@@ -123,7 +128,7 @@
             xhr.send("date=" + selectedDate);
         });
     });
-</script>
+</script> -->
 
         <div class="mt-3 col-3-lg col-2-sm"id="site-name">
             <h2 id="plant_name" style="text-align: center; font-weight: bold; textTransform: uppercase; text-decoration: underline; top-padding: 20px;"></h2>
@@ -141,20 +146,7 @@
                 <div id="search_results"></div>
             </form>
         </div>
-        <script>
-        // JavaScript to set the selected option as the default
-        var selectElement = document.getElementById('selection');
-        selectElement.addEventListener('change', function() {
-            var selectedOption = this.options[this.selectedIndex];
-            selectElement.setAttribute('data-default', selectedOption.textContent);
-        });
-
-        // Set the default option to the selected value if it exists
-        var defaultOption = selectElement.getAttribute('data-default');
-        if (defaultOption) {
-            selectElement.value = defaultOption;
-        }
-        </script>
+        <!--        -->
     </section>
     <section id="chart-section">
         <div class="rendering-section">
