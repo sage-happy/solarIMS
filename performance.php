@@ -29,252 +29,7 @@
             });
         });    
 </script>
-<script>
-    function updateChartHist(data) {
-    // Check if jsonData is defined and contains the expected structure
-    console.log('data=======================');
-    console.log(data);
-    if (data && data.time && data.solar_voltage) {
-        svchart.xAxis[0].setCategories(data.time);
-        svchart.series[0].setData(data.solar_voltage);
-
-        scchart.xAxis[0].setCategories(data.time);
-        scchart.series[0].setData(data.solar_current);
-
-        stchart.xAxis[0].setCategories(data.time);
-        stchart.series[0].setData(data.solar_temperature);
-
-        lvchart.xAxis[0].setCategories(data.time);
-        lvchart.series[0].setData(data.load_voltage);
-
-        lcchart.xAxis[0].setCategories(data.time);
-        lcchart.series[0].setData(data.load_current);
-
-        socchart.xAxis[0].setCategories(data.time);
-        socchart.series[0].setData(data.state_of_charge);     
-         
-        var capitalised=data.site_name[0].toUpperCase();
-        plantName.textContent= capitalised.toUpperCase();
-    }/*else if(data.time== new Date("d")){ //must be inside the first if statement to check whether time format before rendering data
-        svchart.xAxis[0].setTitle.text('Time(Days)');
-        scchart.xAxis[0].setTitle.text('Time(Days)');
-        stchart.xAxis[0].setTitle.text('Time(Days)');
-        lvchart.xAxis[0].setTitle.text('Time(Days)');
-        lcchart.xAxis[0].setTitle.text('Time(Days)');
-        socvchart.xAxis[0].setTitle.text('Time(Days)');
-    }*/
-}
-//Targeting site name from json data
-
-var plantName=document.getElementById('plant_name');
-
-var svchart = Highcharts.chart('svchart', {
-    title: {
-        text: 'PV voltage against time'
-    },
-    xAxis: {
-        categories: [], // Initialize with an empty array
-        title: {
-            text: 'Time(hrs)'
-        }
-    },
-    yAxis: {
-        title: {
-            text: 'PV voltage (V)'
-        },
-        lineColor: '#000000',
-        lineWidth: 1
-    },
-    plotOptions: {
-        series: {
-            label: {
-                connectorAllowed: false
-            },
-        }
-    },
-    series: [{
-        type: 'spline',
-        name: '',
-        data: [] // Initialize with an empty array
-    }]
-});
-
-var scchart = Highcharts.chart('scchart', {
-    title: {
-        text: 'PV charging current against time'
-    },
-    xAxis: {
-        categories: [], // Initialize with an empty array
-        title: {
-            text: 'Time(hrs)'
-        }
-    },
-    yAxis: {
-        title: {
-            text: 'PV charging current (mA)'
-        },
-        lineColor: '#000000',
-        lineWidth: 1
-    },
-    plotOptions: {
-        series: {
-            label: {
-                connectorAllowed: false
-            },
-        }
-    },
-    series: [{
-        type: 'spline',
-        name: '',
-        data: [] // Initialize with an empty array
-    }]
-});
-
-var stchart = Highcharts.chart('stchart', {
-    title: {
-        text: 'Solar temperature against time'
-    },
-    xAxis: {
-        categories: [], // Initialize with an empty array
-        title: {
-            text: 'Time(hrs)'
-        }
-    },
-    yAxis: {
-        title: {
-            text: 'Solar temperature (*C)'
-        },
-        lineColor: '#000000',
-        lineWidth: 1
-    },
-    plotOptions: {
-        series: {
-            label: {
-                connectorAllowed: false
-            },
-        }
-    },
-    series: [{
-        type: 'spline',
-        name: '',
-        data: [] // Initialize with an empty array
-    }]
-});
-
-var lvchart = Highcharts.chart('lvchart', {
-    title: {
-        text: 'Load voltage against time'
-    },
-    xAxis: {
-        categories: [], // Initialize with an empty array
-        title: {
-            text: 'Time(hrs)'
-        }
-    },
-    yAxis: {
-        title: {
-            text: 'Load Voltage (V)'
-        },
-        lineColor: '#000000',
-        lineWidth: 1
-    },
-    plotOptions: {
-        series: {
-            label: {
-                connectorAllowed: false
-            },
-        }
-    },
-    series: [{
-        type: 'spline',
-        name: '',
-        data: [] // Initialize with an empty array
-    }]
-});
-
-var lcchart = Highcharts.chart('lcchart', {
-    title: {
-        text: 'Load current against time'
-    },
-    xAxis: {
-        categories: [], // Initialize with an empty array
-        title: {
-            text: 'Time(hrs)'
-        }
-    },
-    yAxis: {
-        title: {
-            text: 'Load current (A)'
-        },
-        lineColor: '#000000',
-        lineWidth: 1
-    },
-    plotOptions: {
-        series: {
-            label: {
-                connectorAllowed: false
-            },
-        }
-    },
-    series: [{
-        type: 'spline',
-        name: '',
-        data: [] // Initialize with an empty array
-    }]
-});
-
-var socchart = Highcharts.chart('socchart', {
-    title: {
-        text: 'Battery State of charge against time'
-    },
-    xAxis: {
-        categories: [], // Initialize with an empty array
-        title: {
-            text: 'Time(hrs)'
-        }
-    },
-    yAxis: {
-        title: {
-            text: 'Battery State of charge (%)'
-        },
-        lineColor: '#000000',
-        lineWidth: 1
-    },
-    plotOptions: {
-        series: {
-            label: {
-                connectorAllowed: false
-            },
-        }
-    },
-    series: [{
-        type: 'spline',
-        name: '',
-        data: [] // Initialize with an empty array
-    }]
-});
-</script>
-<script>
-    $(document).ready(function() {
-    $("#history").on('click', '#submit',function(e) {
-     // Prevent the default form submission
-     
-      e.preventDefault();
-        console.log($("#history"));
-      // Make an Ajax request to submit the form data
-      $.ajax({
-        type: "POST",
-        url: "php/data.php",
-        data: $("#history").serialize(),
-        success: function(data) {
-            console.log(data);
-            updateChartHist(data);
-          // Handle the response from php/data.php
-        }
-      });
-    });
-  });
-</script>
+    
     <style>
         table {
             border-collapse: collapse;
@@ -324,27 +79,22 @@ var socchart = Highcharts.chart('socchart', {
                         <input type="date" name="start" id="date" class="input-group">
                     </label>
                 </div>
-            <div class="col-4">
+                <div class="col-4">
                     <label for="date" class="d-flex justify-content-center">END DATE:   <br>
                         <input type="date" name="end" id="date1" class="input-group">
                     </label>
                 </div>
-                <!-- <div class="col-4">
-                    <label for="month" class="d-flex justify-content-center">Month: <br>
-                        <input type="month" name="month" id="month" class="input-group">
-                    </label>
-                </div>  -->
                 <div class="col-4">
-                        <input type="submit" id="submit" value="Send">
+                        <input type="submit" id="submit" class="btn btn-primary" value="Fetch">
                 </div>
         </div>
         </div>
     </form>
 
         <div class="mt-3 col-3-lg col-2-sm"id="site-name">
-            <h2 id="plant_name" style="text-align: center; font-weight: bold; textTransform: uppercase; text-decoration: underline; top-padding: 20px;"></h2>
+            <h2 id="plant_name" style="text-align: center; font-weight: bold; text-decoration: underline; padding-top: 20px;"></h2>
         </div> 
-        <div id="search-bar" style="float:right; margin-top: 20px; margin-bottom: 30px; width=100%"> 
+        <div id="search-bar" style="float:right; margin-top: 20px; margin-bottom: 30px;"> 
             <form role="form" action="php/search.php" accept-charset="utf-8" method="post">
                 <div class="btn-group d-flex justify-content-center ml-20px">
                 <select name="selected" id="selection" class="input-group">
