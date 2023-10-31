@@ -1,4 +1,25 @@
 var jsonData; // Define the variable to hold the JSON data
+var historyState = false;
+$(document).ready(function() {
+$("#history").on('click', '#submit',function(e) {
+ // Prevent the default form submission
+  historyState =true;
+  e.preventDefault();
+    console.log($("#history"));
+  // Make an Ajax request to submit the form data
+  $.ajax({
+    type: "POST",
+    url: "php/data.php",
+    data: $("#history").serialize(),
+    success: function(data) {
+        console.log(data);
+        if(historyState ==true){
+            updateChartHist(data);
+        }
+    }
+  });
+});
+});
 
 function poll() {
     var xhr = new XMLHttpRequest();
@@ -10,7 +31,11 @@ function poll() {
             jsonData = JSON.parse(xhr.responseText);
 
             // Update the chart with the new data
-            updateChart();
+            if (historyState == false){
+                console.log('Want to update');
+                console.log(historyState);
+                updateChart();
+            }
         }
     };
 
@@ -34,6 +59,7 @@ function dataReq() {
 function updateChart() {
     // Check if jsonData is defined and contains the expected structure
     if (jsonData && jsonData.time && jsonData.solar_voltage) {
+        console.log('In update');
         svchart.xAxis[0].setCategories(jsonData.time);
         svchart.series[0].setData(jsonData.solar_voltage);
 
@@ -54,14 +80,7 @@ function updateChart() {
          
         var capitalised=jsonData.site_name[0].toUpperCase();
         plantName.textContent= capitalised.toUpperCase();
-    }/*else if(jsonData.time== new Date("d")){ //must be inside the first if statement to check whether time format before rendering data
-        svchart.xAxis[0].setTitle.text('Time(Days)');
-        scchart.xAxis[0].setTitle.text('Time(Days)');
-        stchart.xAxis[0].setTitle.text('Time(Days)');
-        lvchart.xAxis[0].setTitle.text('Time(Days)');
-        lcchart.xAxis[0].setTitle.text('Time(Days)');
-        socvchart.xAxis[0].setTitle.text('Time(Days)');
-    }*/
+    }
 }
 //Targeting site name from json data
 
@@ -131,7 +150,7 @@ var scchart = Highcharts.chart('scchart', {
 
 var stchart = Highcharts.chart('stchart', {
     title: {
-        text: 'Solar temperature against time'
+        text: 'Panel temperature against time'
     },
     xAxis: {
         categories: [], // Initialize with an empty array
@@ -141,7 +160,7 @@ var stchart = Highcharts.chart('stchart', {
     },
     yAxis: {
         title: {
-            text: 'Solar temperature (*C)'
+            text: 'Panel temperature (*C)'
         },
         lineColor: '#000000',
         lineWidth: 1
@@ -254,23 +273,233 @@ var socchart = Highcharts.chart('socchart', {
 });
 
 window.onload = function () {
-    function update() {
-        poll();
-        dataReq();
-        console.log('After updating');
-        setTimeout(update, 3000);
+    if(historyState==false){
+        function update() {
+            poll();
+            dataReq();
+            console.log('After updating');
+            setTimeout(update, 3000);
+        }
+    
+        update(); // Start the update loop
     }
-
-    update(); // Start the update loop
+    
 };
 
-window.onload = function () {
-    function update() {
-        poll();
-        dataReq();
-        console.log('After updating');
-        setTimeout(update, 3000);
-    }
+function updateChartHist(data) {
+    // Check if jsonData is defined and contains the expected structure
+    console.log('data=======================');
+    console.log(data);
+    if (data && data.time && data.solar_voltage) {
+        svchart.xAxis[0].setCategories(data.time);
+        svchart.series[0].setData(data.solar_voltage);
 
-    update(); // Start the update loop
-};
+        scchart.xAxis[0].setCategories(data.time);
+        scchart.series[0].setData(data.solar_current);
+
+        stchart.xAxis[0].setCategories(data.time);
+        stchart.series[0].setData(data.solar_temperature);
+
+        lvchart.xAxis[0].setCategories(data.time);
+        lvchart.series[0].setData(data.load_voltage);
+
+        lcchart.xAxis[0].setCategories(data.time);
+        lcchart.series[0].setData(data.load_current);
+
+        socchart.xAxis[0].setCategories(data.time);
+        socchart.series[0].setData(data.state_of_charge);     
+         
+        var capitalised=data.site_name[0].toUpperCase();
+        plantName.textContent= capitalised.toUpperCase();
+    }
+}
+//Targeting site name from json data
+
+var plantName=document.getElementById('plant_name');
+
+var svchart = Highcharts.chart('svchart', {
+    title: {
+        text: 'PV voltage against time'
+    },
+    xAxis: {
+        categories: [], // Initialize with an empty array
+        title: {
+            text: 'Time(hrs)'
+        }
+    },
+    yAxis: {
+        title: {
+            text: 'PV voltage (V)'
+        },
+        lineColor: '#000000',
+        lineWidth: 1
+    },
+    plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+        }
+    },
+    series: [{
+        type: 'spline',
+        name: '',
+        data: [] // Initialize with an empty array
+    }]
+});
+
+var scchart = Highcharts.chart('scchart', {
+    title: {
+        text: 'PV charging current against time'
+    },
+    xAxis: {
+        categories: [], // Initialize with an empty array
+        title: {
+            text: 'Time(hrs)'
+        }
+    },
+    yAxis: {
+        title: {
+            text: 'PV charging current (mA)'
+        },
+        lineColor: '#000000',
+        lineWidth: 1
+    },
+    plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+        }
+    },
+    series: [{
+        type: 'spline',
+        name: '',
+        data: [] // Initialize with an empty array
+    }]
+});
+
+var stchart = Highcharts.chart('stchart', {
+    title: {
+        text: 'Panel temperature against time'
+    },
+    xAxis: {
+        categories: [], // Initialize with an empty array
+        title: {
+            text: 'Time(hrs)'
+        }
+    },
+    yAxis: {
+        title: {
+            text: 'Panel temperature (*C)'
+        },
+        lineColor: '#000000',
+        lineWidth: 1
+    },
+    plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+        }
+    },
+    series: [{
+        type: 'spline',
+        name: '',
+        data: [] // Initialize with an empty array
+    }]
+});
+
+var lvchart = Highcharts.chart('lvchart', {
+    title: {
+        text: 'Load voltage against time'
+    },
+    xAxis: {
+        categories: [], // Initialize with an empty array
+        title: {
+            text: 'Time(hrs)'
+        }
+    },
+    yAxis: {
+        title: {
+            text: 'Load Voltage (V)'
+        },
+        lineColor: '#000000',
+        lineWidth: 1
+    },
+    plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+        }
+    },
+    series: [{
+        type: 'spline',
+        name: '',
+        data: [] // Initialize with an empty array
+    }]
+});
+
+var lcchart = Highcharts.chart('lcchart', {
+    title: {
+        text: 'Load current against time'
+    },
+    xAxis: {
+        categories: [], // Initialize with an empty array
+        title: {
+            text: 'Time(hrs)'
+        }
+    },
+    yAxis: {
+        title: {
+            text: 'Load current (A)'
+        },
+        lineColor: '#000000',
+        lineWidth: 1
+    },
+    plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+        }
+    },
+    series: [{
+        type: 'spline',
+        name: '',
+        data: [] // Initialize with an empty array
+    }]
+});
+
+var socchart = Highcharts.chart('socchart', {
+    title: {
+        text: 'Battery State of charge against time'
+    },
+    xAxis: {
+        categories: [], // Initialize with an empty array
+        title: {
+            text: 'Time(hrs)'
+        }
+    },
+    yAxis: {
+        title: {
+            text: 'Battery State of charge (%)'
+        },
+        lineColor: '#000000',
+        lineWidth: 1
+    },
+    plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+        }
+    },
+    series: [{
+        type: 'spline',
+        name: '',
+        data: [] // Initialize with an empty array
+    }]
+});
+
