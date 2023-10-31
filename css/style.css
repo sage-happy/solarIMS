@@ -362,6 +362,12 @@ tbody tr:nth-child(even) {
   section#table-section{
     overflow-x: auto;
   }
+  #toggleSectionBtn{
+    width: 96px;
+   }
+   #tableBtn{
+    width: 96px;
+   }
 }
 @media screen and (max-width: 480px) {
   .image-div {
@@ -382,6 +388,12 @@ tbody tr:nth-child(even) {
     width:90%;
     overflow-x: auto;
   }
+  #toggleSectionBtn{
+    width: 96px;
+   }
+   #tableBtn{
+    width: 96px;
+   }
 }
 
 .download-section{
@@ -408,11 +420,6 @@ tbody tr:nth-child(even) {
   text-decoration:underline;
 }
 
-/*About us*/
-/* section#about{
-  background-color: #f8f9fa;
-} */
-/*Contact*/
 section#contact{
   background-color: #fff;
 }
