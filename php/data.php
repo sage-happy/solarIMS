@@ -15,21 +15,11 @@
     if (isset($_POST['start']) && !empty($_POST['end'])) {
         $dateStart = $_POST['start'];
         $dateEnd = $_POST['end'];
-        // list($year, $month, $day) = explode('-', $dateString);
-        //$query = "SELECT * FROM performance WHERE plant_id = $pid AND EXTRACT(DAY FROM time) = $day AND EXTRACT(MONTH FROM time)=$month AND EXTRACT(YEAR FROM time) = $year;";
         $query = "SELECT * FROM performance WHERE plant_id = $pid AND time BETWEEN '$dateStart' AND '$dateEnd';";
-    }
-//    }elseif(isset($_POST['week']) && !empty($_POST['week'])){
-//         $weekString = $_POST['week'];
-//         list($year,$week) = explode('-W', $weekString);
-//         $query = "SELECT * FROM performance WHERE plant_id = $pid AND EXTRACT( WEEK FROM time) =$week AND EXTRACT(YEAR FROM time) = $year;";
-//    }elseif(isset($_POST['month']) && !empty($_POST['month'])){
-//         $monthString = $_POST['month'];
-//         list($year,$month) = explode('-', $monthString);
-//         $query = "SELECT * FROM performance WHERE plant_id = $pid AND EXTRACT( MONTH FROM time) =$month AND EXTRACT(YEAR FROM time) = $year;";       
+    }       
 else{
        //Default query
-      $query = "SELECT * FROM performance WHERE plant_id = $pid AND EXTRACT(DAY FROM time)=$date AND EXTRACT(MONTH FROM time) = $mon AND EXTRACT(YEAR FROM time) = $yr;";
+      $query = "SELECT * FROM performance WHERE plant_id = $pid AND EXTRACT(DAY FROM time)= $date AND EXTRACT(MONTH FROM time) = $mon AND EXTRACT(YEAR FROM time) = $yr;";
   }
     
     $result = pg_query($conn, $query);
