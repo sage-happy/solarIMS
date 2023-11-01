@@ -70,7 +70,7 @@
         <button class="btn btn-warning" id="tableBtn">Table</button>
       </div>
       
-      <form action="php/data.php" method="post" class="form-control" width="300px" id="history">
+      <form method="post" class="form-control" width="300px" id="history">
         <div class="container-fluid">
             <h3 style="text-align: center;">History</h3>
             <div class="row">
